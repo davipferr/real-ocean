@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The sea at a real beach, right now: Open-Meteo wave, tide and weather data rendered with Gerstner waves in Three.js." />
+    <title>Real Ocean</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <aside class="panel" id="place-panel">
+      <header>
+        <h1>Real Ocean</h1>
+        <button id="collapse-place" class="icon" aria-label="Collapse" title="Collapse">–</button>
+      </header>
+      <div class="body">
+        <select id="beach-select" aria-label="Beach"></select>
+        <form id="search-form" class="search" autocomplete="off">
+          <input id="search" type="search" placeholder="Search any coastal place…" aria-label="Search a place" />
+        </form>
+        <div id="search-status" class="muted small" role="status" aria-live="polite"></div>
+        <ul id="results" class="results"></ul>
+        <label class="field">
+          <span>Beach faces <strong id="facing-label" class="mono">—</strong></span>
+          <input id="facing" type="range" min="0" max="359" step="1" aria-label="Beach orientation" />
+        </label>
+        <div id="cell-note" class="muted small"></div>
+      </div>
+    </aside>
+
+    <aside class="panel" id="conditions">
+      <header>
+        <div>
+          <h2 id="place-name">—</h2>
+          <div id="place-region" class="muted small"></div>
+        </div>
+        <span id="mode-badge" class="badge">LIVE</span>
+      </header>
+      <div id="local-time" class="mono small"></div>
+      <div class="big-row">
+        <div class="big"><span id="hs" class="mono">—</span><small>wave height</small></div>
+        <div class="big"><span id="sst" class="mono">—</span><small>water</small></div>
+        <div class="big"><span id="wind" class="mono">—</span><small id="wind-dir">wind</small></div>
+      </div>
+      <div class="compass-row">
+        <svg id="compass" viewBox="-60 -60 120 120" aria-label="Wave and wind directions"></svg>
+        <ul class="legend small">
+          <li><i class="sw-swell"></i>Swell</li>
+          <li><i class="sw-secondary"></i>Secondary swell</li>
+          <li><i class="sw-windsea"></i>Wind sea</li>
+          <li><i class="sw-wind"></i>Wind</li>
+          <li><i class="sw-sea"></i>Sea side</li>
+        </ul>
+      </div>
+      <table id="rows" class="rows small"></table>
+      <details id="physics">
+        <summary>Wave physics</summary>
+        <div id="physics-body" class="small"></div>
+      </details>
+    </aside>
+
+    <div id="views" role="group" aria-label="Camera">
+      <button data-view="beach" class="active" title="Standing on the sand (1)">🏖 Beach</button>
+      <button data-view="aerial" title="Drone view (2)">🚁 Aerial</button>
+      <button data-view="surfer" title="Floating past the break (3)">🏄 Surfer</button>
+      <button data-view="buoy" title="Riding the buoy (4)">🛟 Buoy</button>
+    </div>
+
+    <footer class="panel" id="timeline-panel">
+      <div class="tl-controls">
+        <button id="live" class="active" title="Back to now (L)">● Live</button>
+        <button id="play" title="Time-lapse through the forecast (Space)">▶</button>
+        <span id="tl-label" class="mono small"></span>
+      </div>
+      <div class="tl-chart"><canvas id="timeline" aria-label="Forecast timeline: drag to change the time"></canvas></div>
+    </footer>
+
+    <div id="loading">Fetching the sea…</div>
+    <div id="toast" role="status" aria-live="polite" hidden>
+      <span class="msg"></span>
+      <button class="icon" aria-label="Dismiss">×</button>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
